@@ -10,6 +10,12 @@
 Schedule a care task for a pet. The owner picks a pet and creates a task such as a walk, feeding, or medication, with a time and how often it repeats (once, daily, or weekly).
 View today’s schedule. The owner sees every task across all their pets in one list, ordered by time, and can mark tasks complete.
 
+Core actions: add a pet, schedule a task for a pet, view today’s tasks across all pets in time order.
+Task: represents one care activity (description, time, frequency, completion status). It only knows about itself and can mark itself complete.
+Pet: stores a pet’s details and owns a list of its tasks.
+Owner: manages multiple pets and can return every task across all of them through get_all_tasks().
+Scheduler: the “brain.” It reads tasks through the Owner and handles sorting, filtering, conflict detection, and completing tasks.
+
 **b. Design changes**
 
 - Did your design change during implementation?
