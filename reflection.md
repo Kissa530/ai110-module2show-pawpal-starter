@@ -21,6 +21,8 @@ Scheduler: the “brain.” It reads tasks through the Owner and handles sorting
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
+After asking my AI assistant to review my skeleton, I made one change: I updated Pet.get_tasks() and Owner.get_all_tasks() to be annotated as returning list[Task] instead of None, since those methods are meant to give back tasks. The AI also suggested having the Scheduler get tasks through Owner.get_all_tasks() instead of looping over pets itself, and noted that I should clarify the Scheduler method signatures and decide what counts as a conflict. I didn’t change the skeleton for those, since they affect how I write the method bodies later, and I plan to follow them during implementation.
+
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
