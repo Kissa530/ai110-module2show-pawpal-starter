@@ -26,7 +26,7 @@ class Pet:
     def add_task(self, task: Task) -> None:
         pass
 
-    def get_tasks(self) -> None:
+    def get_tasks(self) -> list[Task]:
         pass
 
 
@@ -41,8 +41,10 @@ class Owner:
     def add_pet(self, pet: Pet) -> None:
         pass
 
-    def get_all_tasks(self) -> None:
+    def get_all_tasks(self) -> list[Task]:
         pass
+
+    
 
 
 class Scheduler:
