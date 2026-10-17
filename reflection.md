@@ -5,6 +5,7 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+
   Add a pet. The owner enters a pet’s basic details (name, species) so the app can track care for each animal.
 Schedule a care task for a pet. The owner picks a pet and creates a task such as a walk, feeding, or medication, with a time and how often it repeats (once, daily, or weekly).
 View today’s schedule. The owner sees every task across all their pets in one list, ordered by time, and can mark tasks complete.
