@@ -44,12 +44,22 @@ After asking my AI assistant to review my skeleton, I made one change: I updated
 **a. How you used AI**
 
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
+
+I used my AI coding assistant across the whole build. In Phase 1 I used it to turn my brainstormed attributes and methods into a Mermaid class diagram and then into a dataclass skeleton, and I asked it to review that skeleton for missing relationships. In Phase 2 I used it in agent mode to implement the four classes in pawpal_system.py and to draft the pytest tests. I also used the AI to help me push the changes since it was rejecting at first due to the VS Code and the repo not being in sync.
+
 - What kinds of prompts or questions were most helpful?
+
+The most helpful prompts were specific ones that named the exact behavior I wanted. For example, I told it that Scheduler.sort_by_time() had to get its tasks through Owner.get_all_tasks(), which kept it from putting the pet-looping logic in the wrong place. Asking it to review a skeleton I had already written was also more useful than asking it to design from scratch, because I had something concrete to react to.
 
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
+
+The generated Task class had no default values, so creating a task meant passing description, time, frequency, completed, and due_date every time. I didn’t accept that as-is. I added defaults (frequency="once", completed=False, and due_date set to today) because the demo and tests became repetitive otherwise, and the defaults matched my UML. I also left filter_tasks(), detect_conflicts(), and mark_task_complete() as stubs instead of letting the AI build them early, since they belong to the algorithm phase.
+
 - How did you evaluate or verify what the AI suggested?
+
+To verify the AI’s work, I didn’t just trust its report that checks passed. I read the code to confirm the Scheduler goes through Owner.get_all_tasks(), ran python main.py with tasks added out of time order to check that both pets’ tasks printed sorted, and ran python -m pytest, which showed 2 passed.
 
 ---
 

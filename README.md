@@ -54,6 +54,13 @@ Paste a sample of your app's CLI or Streamlit output here so a reader can see wh
 #   ...
 ```
 
+Today's Schedule
+----------------
+07:30 | Buddy | Morning walk
+08:00 | Mochi | Breakfast
+14:00 | Buddy | Afternoon walk
+18:00 | Mochi | Evening meal
+
 ## 🧪 Testing PawPal+
 
 ```bash
@@ -69,6 +76,18 @@ Sample test output:
 ```
 # Paste your pytest output here
 ```
+
+
+PS C:\Users\issam\ai110-module2show-pawpal-starter> python -m pytest
+================================================= test session starts =================================================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\issam\ai110-module2show-pawpal-starter
+plugins: anyio-4.15.1
+collected 2 items
+
+tests\test_pawpal.py ..                                                                                          [100%]
+
+================================================== 2 passed in 0.04s ==================================================
 
 ## 📐 Smarter Scheduling
 
@@ -92,3 +111,17 @@ Describe your app in numbered steps so a reader can follow along without watchin
 5. <!-- Add more steps as needed -->
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+
+## Implementation Summary
+
+PawPal+ is a pet care scheduler built in Python. The logic lives in
+pawpal_system.py and is made of four classes that work together:
+
+- Task: one care activity (description, time, frequency, completion status).
+- Pet: stores a pet's details and its own list of tasks.
+- Owner: manages multiple pets and gathers every pet's tasks with get_all_tasks().
+- Scheduler: reads tasks through Owner.get_all_tasks() and sorts them by time.
+
+main.py is a CLI demo that creates an owner, two pets, and several tasks, then
+prints a sorted schedule. tests/test_pawpal.py has two pytest tests covering task
+completion and task addition.
