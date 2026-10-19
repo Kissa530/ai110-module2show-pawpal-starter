@@ -16,7 +16,7 @@ Your job is to design the system first (UML), then implement the logic in Python
 
 - **Manage pets and tasks:** Add pets to an owner with `Owner.add_pet()` and add tasks to a pet with `Pet.add_task()`. Each task is associated with its pet.
 - **View an owner's tasks:** `Owner.get_all_tasks()` collects tasks from all pets.
-- **Sort the schedule by time:** `Scheduler.sort_by_time()` returns tasks in ascending time order.
+- **Sort the schedule by time:** `Scheduler.sort_by_time()` returns tasks ordered by due date, then by `HH:MM` time.
 - **Filter tasks:** `Scheduler.filter_tasks()` filters by pet name, completion status, or both.
 - **Detect schedule conflicts:** `Scheduler.detect_conflicts()` reports pending tasks with the same due date and time.
 - **Complete and recur tasks:** `Scheduler.mark_task_complete()` marks a task complete and creates its next daily or weekly occurrence. One-time tasks do not create a copy.

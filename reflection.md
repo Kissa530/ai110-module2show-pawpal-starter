@@ -69,7 +69,7 @@ The most helpful prompts were specific ones that named the exact behavior I want
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 
-The generated Task class had no default values, so creating a task meant passing description, time, frequency, completed, and due_date every time. I didn’t accept that as-is. I added defaults (frequency="once", completed=False, and due_date set to today) because the demo and tests became repetitive otherwise, and the defaults matched my UML. I also left filter_tasks(), detect_conflicts(), and mark_task_complete() as stubs instead of letting the AI build them early, since they belong to the algorithm phase.
+The generated Task class had no default values, so creating a task meant passing description, time, frequency, completed, and due_date every time. I didn’t accept that as-is. I added defaults (frequency="once", completed=False, and due_date set to today) because the demo and tests became repetitive otherwise, and the defaults matched my UML. I also left filter_tasks(), detect_conflicts(), and mark_task_complete() in Phase 2 as stubs instead of letting the AI build them early, since they belong to the algorithm phase.
 
 - How did you evaluate or verify what the AI suggested?
 
@@ -108,7 +108,7 @@ I’m fairly confident, about 4 out of 5, because all 11 tests pass and I also c
 
 - What part of this project are you most satisfied with?
 
-I’m most satisfied with how the Scheduler works across pets. Owner.get_all_tasks() collects every pet’s tasks in one place, so sorting, filtering, and conflict detection all build on it without repeating the loop. I’m also happy that I built and tested the logic in the terminal first, so when I connected it to the Streamlit app, everything already worked and the UI only had to call my methods.
+I’m most satisfied with how the Scheduler works across pets. Owner.get_all_tasks() collects every pet’s tasks in one place, so sorting, filtering, and conflict detection all build on it without repeating the loop. I’m also happy that I built and tested the logic in the terminal first, so when I connected it to the Streamlit app, the core logic already worked and the UI only had to call my methods.
 
 **b. What you would improve**
 
