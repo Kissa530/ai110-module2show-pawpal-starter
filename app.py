@@ -83,17 +83,41 @@ st.divider()
 st.subheader("Today's Schedule")
 
 scheduler = Scheduler(owner)
-sorted_tasks = scheduler.sort_by_time()
+conflicts = scheduler.detect_conflicts()
+if conflicts:
+    for warning in conflicts:
+        st.warning(warning)
+else:
+    st.success("No task conflicts found.")
+
+filter_col1, filter_col2 = st.columns(2)
+with filter_col1:
+    selected_pet = st.selectbox(
+        "Filter by pet",
+        ["All pets", *[pet.name for pet in owner.pets]],
+    )
+with filter_col2:
+    selected_status = st.selectbox(
+        "Filter by status",
+        ["All tasks", "Pending", "Completed"],
+    )
+
+filtered_tasks = scheduler.filter_tasks(
+    pet_name=None if selected_pet == "All pets" else selected_pet,
+    completed=(
+        None
+        if selected_status == "All tasks"
+        else selected_status == "Completed"
+    ),
+)
+sorted_tasks = sorted(filtered_tasks, key=lambda task: task.time)
 
 if sorted_tasks:
-    pet_names_by_task_id = {
-        id(task): pet.name for pet in owner.pets for task in pet.get_tasks()
-    }
     st.table(
         [
             {
                 "Time": task.time,
-                "Pet": pet_names_by_task_id[id(task)],
+                "Pet": task.pet_name,
                 "Task": task.description,
                 "Frequency": task.frequency,
                 "Done": "yes" if task.completed else "no",
@@ -102,4 +126,26 @@ if sorted_tasks:
         ]
     )
 else:
-    st.info("No tasks yet. Add one above.")
+    st.info("No tasks match these filters.")
+
+pending_tasks = [task for task in sorted_tasks if not task.completed]
+if pending_tasks:
+    st.subheader("Mark a Task Complete")
+    selected_task_index = st.selectbox(
+        "Pending task",
+        range(len(pending_tasks)),
+        format_func=lambda index: (
+            f"{pending_tasks[index].time} - {pending_tasks[index].pet_name}: "
+            f"{pending_tasks[index].description}"
+        ),
+    )
+    if st.button("Mark complete"):
+        task = pending_tasks[selected_task_index]
+        recurring = task.frequency in ("daily", "weekly")
+        scheduler.mark_task_complete(task)
+        if recurring:
+            st.success("Task completed. The next occurrence was added.")
+        else:
+            st.success("Task completed.")
+else:
+    st.info("There are no pending tasks in this view to mark complete.")

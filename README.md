@@ -12,15 +12,28 @@ A busy pet owner needs help staying consistent with pet care. They want an assis
 
 Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
 
-## What you will build
+## Features
 
-Your final app should:
+- **Manage pets and tasks:** Add pets to an owner with `Owner.add_pet()` and add tasks to a pet with `Pet.add_task()`. Each task is associated with its pet.
+- **View an owner's tasks:** `Owner.get_all_tasks()` collects tasks from all pets.
+- **Sort the schedule by time:** `Scheduler.sort_by_time()` returns tasks in ascending time order.
+- **Filter tasks:** `Scheduler.filter_tasks()` filters by pet name, completion status, or both.
+- **Detect schedule conflicts:** `Scheduler.detect_conflicts()` reports pending tasks with the same due date and time.
+- **Complete and recur tasks:** `Scheduler.mark_task_complete()` marks a task complete and creates its next daily or weekly occurrence. One-time tasks do not create a copy.
 
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
+## What PawPal+ does
+
+The app lets a user:
+
+- Enter an owner name and add pets with a name and species
+- Schedule tasks for each pet with a time and a frequency (once, daily, or weekly)
+- See every pet's tasks in one schedule, sorted by date and time
+- Filter the schedule by pet or by pending/completed status
+- Get a warning when two pending tasks are scheduled at the same time
+- Mark tasks complete, which automatically creates the next daily or weekly occurrence
+
+The logic is covered by automated tests for sorting, recurrence, conflict detection, and edge cases.
+
 
 ## Getting started
 
@@ -42,24 +55,20 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
+
 ## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Output from `python main.py`:
 
 ```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
-```
-
 Today's Schedule
 ----------------
 07:30 | Buddy | Morning walk
 08:00 | Mochi | Breakfast
 14:00 | Buddy | Afternoon walk
 18:00 | Mochi | Evening meal
+```
+
 
 
 ## 🧪 Testing PawPal+
@@ -116,28 +125,75 @@ All 11 tests pass and they cover the main behaviors and several edge cases. I he
 | Conflict handling | `Scheduler.detect_conflicts()` | Returns a warning for each date and time with more than one pending task, for the same pet or different pets. Matches exact times only (no durations) and skips completed tasks. |
 | Recurring tasks | `Scheduler.mark_task_complete()` | Marks the task done and, for `daily` or `weekly` tasks, adds a new task to the same pet due 1 or 7 days later using `timedelta`. One-time tasks are only marked complete. |
 
+
+
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+**What the app lets you do**
+- Add pets with a name and species.
+- Schedule a task for a pet with a description, a time, and a frequency (once, daily, or weekly).
+- Mark tasks complete from a list of pending tasks.
+- View a schedule sorted by time, filtered by pet or status, with a table of the results.
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+**Example workflow**
+1. Enter an owner name and add two pets, such as Mochi (cat) and Buddy (dog).
+2. Schedule a few tasks for each pet, entering them in any order.
+3. Check the Schedule section: tasks from both pets appear sorted by time.
+4. Add two tasks at the same time. A yellow warning names both tasks, their pets, and the time, and tells you to move one.
+5. Mark a daily task complete. The task is checked off and a new copy appears dated for the next day.
+6. Use the pet and status filters to narrow the table.
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+**Key Scheduler behaviors shown**
+- Sorting puts tasks from different pets in one chronological list.
+- Conflict warnings appear above the table and disappear once the conflict is resolved.
+- Recurring tasks create their next occurrence automatically.
+
+**Sample CLI output from `python main.py`**
+
+```
+Schedule (sorted by time)
+-------------------------
+2026-10-19 07:30 | Buddy | Morning walk
+2026-10-19 08:00 | Mochi | Breakfast
+2026-10-19 12:00 | Mochi | Grooming
+2026-10-19 12:00 | Buddy | Medication
+2026-10-19 14:00 | Buddy | Afternoon walk
+2026-10-19 18:00 | Mochi | Evening meal
+2026-10-20 18:00 | Mochi | Evening meal
+
+Mochi's Tasks
+-------------
+2026-10-19 18:00 | Mochi | Evening meal
+2026-10-19 08:00 | Mochi | Breakfast
+2026-10-19 12:00 | Mochi | Grooming
+2026-10-20 18:00 | Mochi | Evening meal
+
+Completed Tasks
+---------------
+2026-10-19 18:00 | Mochi | Evening meal
+
+Schedule Conflict Warnings
+--------------------------
+Conflict on 2026-10-19 at 12:00: Mochi: Grooming; Buddy: Medication
+
+Daily Recurrence
+----------------
+Next Evening meal: 2026-10-20 at 18:00
+```
+
+
 
 ## Implementation Summary
 
 PawPal+ is a pet care scheduler built in Python. The logic lives in
 pawpal_system.py and is made of four classes that work together:
 
-- Task: one care activity (description, time, frequency, completion status).
+- Task: one care activity (description, time, frequency, due date, completion status, and its pet's name).
 - Pet: stores a pet's details and its own list of tasks.
 - Owner: manages multiple pets and gathers every pet's tasks with get_all_tasks().
-- Scheduler: reads tasks through Owner.get_all_tasks() and sorts them by time.
+- Scheduler: reads tasks through Owner.get_all_tasks() to sort, filter, detect
+  conflicts, and create the next occurrence of recurring tasks.
 
-main.py is a CLI demo that creates an owner, two pets, and several tasks, then
-prints a sorted schedule. tests/test_pawpal.py has two pytest tests covering task
-completion and task addition.
+main.py is a CLI demo of these features, app.py is the Streamlit interface on top
+of them, and tests/test_pawpal.py has 11 pytest tests covering sorting, recurrence,
+conflict detection, filtering, and edge cases.
