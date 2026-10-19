@@ -30,12 +30,24 @@ After asking my AI assistant to review my skeleton, I made one change: I updated
 **a. Constraints and priorities**
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
+
+My scheduler considers four things: the time of day (HH:MM), the due date, whether a task is completed, and how often it repeats (once, daily, or weekly). It orders tasks by due date and then time, ignores completed tasks when looking for conflicts, and creates the next occurrence of daily and weekly tasks automatically. 
+
 - How did you decide which constraints mattered most?
+
+ I decided time mattered most because a pet owner mainly needs to know what to do next and when, and double-booked times are the most obvious problem to warn about. I left out priority and duration to keep the system simple and readable, since the core scenario works without them.
 
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+
+My scheduler only flags two tasks as conflicting when they have exactly the same date and time. Tasks have no duration, so it can’t tell that a walk at 07:00 that lasts an hour overlaps with a task at 07:30. 
+
+
 - Why is that tradeoff reasonable for this scenario?
+
+
+This tradeoff is reasonable because exact matching is simple, easy to test, and enough to warn an owner about obvious double-booking. Catching real overlaps would need a duration field and a comparison of time ranges, which would add complexity this project doesn’t need yet.
 
 ---
 
