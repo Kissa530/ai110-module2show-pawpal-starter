@@ -61,33 +61,51 @@ Today's Schedule
 14:00 | Buddy | Afternoon walk
 18:00 | Mochi | Evening meal
 
+
 ## 🧪 Testing PawPal+
 
-```bash
-# Run the full test suite:
-pytest
+Run the tests from the repo root:
 
-# Run with coverage:
-pytest --cov
 ```
+python -m pytest
+```
+
+The suite covers:
+- **Sorting:** tasks added out of order come back in chronological order across pets.
+- **Recurrence:** completing a daily task creates a task for the next day on the same pet, a weekly task creates one 7 days later, and a one-time task creates none.
+- **Conflict detection:** two pending tasks at the same date and time produce a warning, while completed tasks and tasks on different dates do not.
+- **Edge cases:** an owner or pet with no tasks, and filtering by a pet name that doesn't exist.
+- **Basics:** marking a task complete and adding a task to a pet.
 
 Sample test output:
 
 ```
-# Paste your pytest output here
-```
-
-
-PS C:\Users\issam\ai110-module2show-pawpal-starter> python -m pytest
 ================================================= test session starts =================================================
-platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- C:\Python314\python.exe
+cachedir: .pytest_cache
 rootdir: C:\Users\issam\ai110-module2show-pawpal-starter
 plugins: anyio-4.15.1
-collected 2 items
+collected 11 items
 
-tests\test_pawpal.py ..                                                                                          [100%]
+tests/test_pawpal.py::test_task_completion PASSED                                                                [  9%]
+tests/test_pawpal.py::test_task_addition_increases_pet_task_count PASSED                                         [ 18%]
+tests/test_pawpal.py::test_detect_conflicts_reports_pending_tasks_at_same_slot PASSED                            [ 27%]
+tests/test_pawpal.py::test_detect_conflicts_ignores_completed_or_different_date_tasks PASSED                     [ 36%]
+tests/test_pawpal.py::test_sort_tasks_chronologically_across_pets PASSED                                         [ 45%]
+tests/test_pawpal.py::test_daily_completion_creates_next_day_task_on_same_pet PASSED                             [ 54%]
+tests/test_pawpal.py::test_weekly_completion_creates_task_seven_days_later PASSED                                [ 63%]
+tests/test_pawpal.py::test_one_time_completion_creates_no_copy PASSED                                            [ 72%]
+tests/test_pawpal.py::test_detect_conflicts_for_pending_tasks_at_same_date_and_time PASSED                       [ 81%]
+tests/test_pawpal.py::test_empty_owner_and_pet_have_no_tasks PASSED                                              [ 90%]
+tests/test_pawpal.py::test_filter_by_unknown_pet_returns_no_tasks PASSED                                         [100%]
 
-================================================== 2 passed in 0.04s ==================================================
+================================================= 11 passed in 0.04s ==================================================
+```
+
+**Confidence Level: ★★★★☆ (4/5)**
+
+All 11 tests pass and they cover the main behaviors and several edge cases. I held back a star because sorting assumes zero-padded `HH:MM` times, conflict detection only checks exact matches (no durations), and some tests don't check every field of a recurring task.
+
 
 ## 📐 Smarter Scheduling
 
